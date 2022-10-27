@@ -1,13 +1,13 @@
 import 'package:emoji_game/screens/homePage.dart';
 import 'package:flutter/material.dart';
-import 'package:youtube_player_iframe/youtube_player_iframe.dart';
+//import 'package:youtube_player_iframe/youtube_player_iframe.dart';
 import 'package:flutter/services.dart';
 
 class DoneScreen extends StatefulWidget {
   final String song;
   final int currPoints;
-  final int rightSong;
-  const DoneScreen({Key? key, required this.song, required this.currPoints, required this.rightSong}) : super(key: key);
+  final int currIndex;
+  const DoneScreen({Key? key,required this.currIndex, required this.song, required this.currPoints,}) : super(key: key);
 
   @override
   State<DoneScreen> createState() => _DoneScreenState();
@@ -24,6 +24,7 @@ class _DoneScreenState extends State<DoneScreen> {
   String songName = '';
   int points = 0;
   int right = 0;
+  int index = 0;
 
   // YoutubePlayerController _ytbPlayerController = YoutubePlayerController(initialVideoId: 'F2AitTPI5U0');
   // List<YoutubeModel> videosList = [
@@ -36,7 +37,7 @@ class _DoneScreenState extends State<DoneScreen> {
 
     songName = widget.song;
     points = widget.currPoints;
-    right = widget.rightSong+1;
+    index = widget.currIndex+1;
 
     // _setOrientation([
     //   DeviceOrientation.landscapeRight,
@@ -94,7 +95,7 @@ class _DoneScreenState extends State<DoneScreen> {
               ElevatedButton(onPressed: (){
                 Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => HomePage(currPoints: points,rightSong: right,),)
+                    MaterialPageRoute(builder: (context) => HomePage(currPoints: points, questionIndex: index,),)
                 );
               }, child: Text('Прордолжить', style: TextStyle(fontSize: 40),),)
             ],

@@ -1,0 +1,70 @@
+{
+  "songs": [
+    {
+      "id": "1",
+      "name": "Single Ladies",
+      "singer": "Beyoncé",
+      "emoji": "\uD83D\uDEAB\uD83D\uDC8D\uD83D\uDC6F"
+    },
+    {
+      "id": "2",
+      "name": "Black or White",
+      "singer": "Michael Jackson",
+      "emoji": "⚫ \uD83E\uDD14 ⚪"
+    },
+    {
+      "id": "3",
+      "name": "Dusk Till Dawn",
+      "singer": "ZAYN",
+      "emoji": "\uD83C\uDF03 ➡️ \uD83C\uDF06"
+    },
+    {
+      "id": "4",
+      "name": "Blank Space",
+      "singer": "Taylor Swift",
+      "emoji": "⬜️ \uD83C\uDF0C"
+    },
+    {
+      "id": "5",
+      "name": "American Pie",
+      "singer": "Don McLean",
+      "emoji": "\uD83C\uDDFA\uD83C\uDDF8 \uD83E\uDD67"
+    },
+    {
+      "id": "6",
+      "name": "Cry Me a River",
+      "singer": "Justin Timberlake",
+      "emoji": "\uD83D\uDE2D \uD83C\uDFDE️"
+    },
+    {
+      "id": "7",
+      "name": "Take me to Church",
+      "singer": "Hozier",
+      "emoji": "\uD83D\uDE4B\uD83C\uDFFC\u200D♀️ \uD83D\uDC49\uD83C\uDFFB ⛪️"
+    },
+    {
+      "id": "8",
+      "name": "Englishman in New York",
+      "singer": "Sting",
+      "emoji": "\uD83D\uDC82\uD83C\uDFFB ➡️ \uD83D\uDDFD"
+    },
+    {
+      "id": "9",
+      "name": "Ice Ice Baby",
+      "singer": "Vanilla Ice",
+      "emoji": "\uD83C\uDF67 \uD83C\uDF67 \uD83D\uDC76"
+    },
+    {
+      "id": "10",
+      "name": "Star Boy",
+      "singer": "The Weeknd",
+      "emoji": "⭐️ \uD83D\uDC66"
+    },
+    {
+      "id": "11",
+      "name": "Eye of the Tiger",
+      "singer": "Survivor",
+      "emoji": "\uD83D\uDC41 \uD83D\uDC2F"
+    }
+  ]
+}
