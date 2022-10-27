@@ -17,11 +17,13 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   var rng = Random();
   List<int> questionsOrder = [];
+  List<int> q = [];
   int points =0;
   int record = 0;
   int right = 0;
   int currentIndex = 0;
   int indexSong = 0;
+  int isCorrectAnswer = 0; // -1 is wrong; 1 is right; 0 is clear
   late Future<List<Song>> futureSongs;
 
 
@@ -44,6 +46,23 @@ class _HomePageState extends State<HomePage> {
     return list;
   }
 
+  List<int> generateAnswers(int id){
+    Random rnd = new Random();
+    int r = 0;
+    List<int> vars = [];
+    vars.add(id);
+    for(int i=0; i<3; i++){
+      r = rnd.nextInt(10);
+      if(vars.contains(r)) i--;
+      else vars.add(r);
+
+    }
+    vars = vars..shuffle();
+    print(vars);
+    return vars;
+
+  }
+
   bool checkAnswer(int idSong){
     return idSong == indexSong ? true : false;
   }
@@ -57,8 +76,8 @@ class _HomePageState extends State<HomePage> {
     futureSongs = fetchSong();
     generateSong();
     questionsOrder = generateSong();
-    print(questionsOrder);
     indexSong = questionsOrder[currentIndex];
+    q = generateAnswers(indexSong);
 
     super.initState();
   }
@@ -71,11 +90,6 @@ class _HomePageState extends State<HomePage> {
         future: futureSongs,
         builder: (context, snapshot){
           if(snapshot.hasData){
-            // List<int> a = [
-            //   questionsOrder[currentIndex+1],
-            //   questionsOrder[currentIndex+2],
-            //   questionsOrder[currentIndex+3]
-            // ];
             return ListView.builder(
               itemCount: 1,
               shrinkWrap: true,
@@ -104,18 +118,50 @@ class _HomePageState extends State<HomePage> {
                     ),
                     const SizedBox(height: 60,),
 
-                        GridView.builder(
-                          shrinkWrap: true,
-                          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
-                          itemBuilder: (BuildContext context, int index){
-                            return Card(
-                              child: GridTile(
-                                footer: Text(snapshot.data![indexSong].singer),
-                                child: Text(snapshot.data![indexSong].name),
+                    GridView.count(
+                      crossAxisCount: 4,
+                      shrinkWrap: true,
+                      children: List.generate(4, (index){
+                        return GestureDetector(
+                          onTap: (){
+                            if(q[index]==indexSong){
+                              setState((){
+                                points+=10;
+                                if(points>record) _setPrefs();
+                                currentIndex++;
+                                isCorrectAnswer = 1;
+                                indexSong = questionsOrder[currentIndex];
+                                q = generateAnswers(indexSong);
+                              });
+                            } else setState((){
+                              isCorrectAnswer = -1;
+                            });
+                          },
+                          child: Padding(
+                            padding: EdgeInsets.all(20),
+                            child: Container(
+                              decoration: BoxDecoration(
+                                color: isCorrectAnswer==0 ? Colors.blueAccent : isCorrectAnswer==-1 ? Colors.redAccent : Colors.lightGreen,
+                                borderRadius: BorderRadius.circular(10)
                               ),
-                            );
-                          }
-                        )
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    snapshot.data![q[index]].name,
+                                    style: TextStyle(fontSize: 20, color: Colors.white, fontWeight: FontWeight.w700),
+                                  ),
+                                  Text(
+                                    snapshot.data![q[index]].singer,
+                                    style: TextStyle(fontSize: 18, color: Colors.white),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        );
+                      }),
+                    )
 
 
                   ],
