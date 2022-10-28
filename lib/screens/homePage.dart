@@ -61,22 +61,30 @@ class _HomePageState extends State<HomePage> {
 
     }
     vars = vars..shuffle();
-    print(vars);
     return vars;
 
   }
 
- void nextQuestion (bool isCorrect){
+ void nextQuestion (bool isCorrect, int countQ){
+
    setState((){
      isCorrectAnswer = 0;
      isSelectedAnswer = 0;
+     currentIndex++;
      if(isCorrect){
        points+=10;
      }
      if(points>record) _setPrefs();
-     currentIndex++;
-     indexSong = questionsOrder[currentIndex];
-     q = generateAnswers(indexSong);
+     if(currentIndex+1>countQ){
+       Navigator.push(
+           context,
+           MaterialPageRoute(builder: (context) => DoneScreen(points: points, maxPoints: countQ,),)
+       );
+     } else {
+       indexSong = questionsOrder[currentIndex];
+       q = generateAnswers(indexSong);
+     }
+
    });
  }
 
@@ -141,13 +149,13 @@ class _HomePageState extends State<HomePage> {
                               setState((){
                                 isCorrectAnswer = 1;
                                 isSelectedAnswer = index;
-                                Timer(Duration(seconds: 1), () => nextQuestion(true));
+                                Timer(Duration(seconds: 1), () => nextQuestion(true, snapshot.data!.length));
                               });
                             } else {
                               setState((){
                                 isSelectedAnswer = index;
                                 isCorrectAnswer = - 1;
-                                Timer(Duration(seconds: 1), () => nextQuestion(false));
+                                Timer(Duration(seconds: 1), () => nextQuestion(false, snapshot.data!.length));
 
                               });
                             }

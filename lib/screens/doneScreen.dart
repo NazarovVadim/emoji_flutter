@@ -1,121 +1,56 @@
 import 'package:emoji_game/screens/homePage.dart';
 import 'package:flutter/material.dart';
-//import 'package:youtube_player_iframe/youtube_player_iframe.dart';
-import 'package:flutter/services.dart';
 
 class DoneScreen extends StatefulWidget {
-  final String song;
-  final int currPoints;
-  final int currIndex;
-  const DoneScreen({Key? key,required this.currIndex, required this.song, required this.currPoints,}) : super(key: key);
+  final int points;
+  final int maxPoints;
+  const DoneScreen({Key? key, required this.points, required this.maxPoints}) : super(key: key);
 
   @override
   State<DoneScreen> createState() => _DoneScreenState();
 }
 
-// class YoutubeModel {
-//   final int id;
-//   final String youtubeId;
-//
-//   const YoutubeModel({required this.id, required this.youtubeId});
-// }
-
 class _DoneScreenState extends State<DoneScreen> {
-  String songName = '';
-  int points = 0;
-  int right = 0;
-  int index = 0;
-
-  // YoutubePlayerController _ytbPlayerController = YoutubePlayerController(initialVideoId: 'F2AitTPI5U0');
-  // List<YoutubeModel> videosList = [
-  //   YoutubeModel(id: 1, youtubeId: 'F2AitTPI5U0'),
-  // ];
-
-
+  int score = 0;
+  int maxScore = 0;
   @override
   void initState() {
-
-    songName = widget.song;
-    points = widget.currPoints;
-    index = widget.currIndex+1;
-
-    // _setOrientation([
-    //   DeviceOrientation.landscapeRight,
-    //   DeviceOrientation.landscapeLeft,
-    //   DeviceOrientation.portraitUp,
-    //   DeviceOrientation.portraitDown,
-    // ]);
-
-    // WidgetsBinding.instance!.addPostFrameCallback((_) {
-    //   setState(() {
-    //     _ytbPlayerController = YoutubePlayerController(
-    //       initialVideoId: videosList[0].youtubeId,
-    //       params: YoutubePlayerParams(
-    //         showFullscreenButton: true,
-    //       ),
-    //     );
-    //   });
-    // });
-
+    score = widget.points;
+    maxScore = widget.maxPoints;
     super.initState();
   }
-  //
-  // @override
-  // void dispose() {
-  //   super.dispose();
-  //
-  //   _setOrientation([
-  //     DeviceOrientation.portraitUp,
-  //     DeviceOrientation.portraitDown,
-  //   ]);
-  //
-  //   _ytbPlayerController.close();
-  // }
-  //
-  // _setOrientation(List<DeviceOrientation> orientations) {
-  //   SystemChrome.setPreferredOrientations(orientations);
-  // }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: [
-          //_buildYtbView(),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text('Верно! Это $songName', style: TextStyle(fontSize: 40),)
-            ],
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              ElevatedButton(onPressed: (){
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text('Поздравляем!', style: TextStyle(color: Colors.white.withOpacity(0.7), fontSize: 30)),
+            Text('Вы набрали $score баллов из ${maxScore*10} возможных!',style: TextStyle(color: Colors.white.withOpacity(0.7), fontSize: 30)),
+            const SizedBox(height: 50,),
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                primary: Colors.cyan,
+                padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 30),
+                textStyle: TextStyle(
+                    color: Colors.white.withOpacity(0.9),
+                    fontSize: 30,
+                  fontWeight: FontWeight.w700
+                )
+              ),
+              onPressed: (){
                 Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => HomePage(currPoints: points, questionIndex: index,),)
+                    MaterialPageRoute(builder: (context) => const HomePage(currPoints: 0, questionIndex: 0),)
                 );
-              }, child: Text('Прордолжить', style: TextStyle(fontSize: 40),),)
-            ],
-          )
-
-        ],
-      ),
+              },
+              child: const Text('Начать заново')
+            )
+          ],
+        ),
+      )
     );
   }
-
-  // _buildYtbView() {
-  //   return AspectRatio(
-  //     aspectRatio: 16 / 9,
-  //     child: _ytbPlayerController != null
-  //         // ignore: deprecated_member_use
-  //         ? YoutubePlayerIFrame(controller: _ytbPlayerController)
-  //         : Center(child: CircularProgressIndicator()),
-  //   );
-  // }
-
-
-
 }
