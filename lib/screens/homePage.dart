@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:emoji_game/screens/doneScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -24,6 +26,7 @@ class _HomePageState extends State<HomePage> {
   int currentIndex = 0;
   int indexSong = 0;
   int isCorrectAnswer = 0; // -1 is wrong; 1 is right; 0 is clear
+  int isSelectedAnswer = 0; //0 - nothing select
   late Future<List<Song>> futureSongs;
 
 
@@ -63,9 +66,19 @@ class _HomePageState extends State<HomePage> {
 
   }
 
-  bool checkAnswer(int idSong){
-    return idSong == indexSong ? true : false;
-  }
+ void nextQuestion (bool isCorrect){
+   setState((){
+     isCorrectAnswer = 0;
+     isSelectedAnswer = 0;
+     if(isCorrect){
+       points+=10;
+     }
+     if(points>record) _setPrefs();
+     currentIndex++;
+     indexSong = questionsOrder[currentIndex];
+     q = generateAnswers(indexSong);
+   });
+ }
 
 
   @override
@@ -126,22 +139,24 @@ class _HomePageState extends State<HomePage> {
                           onTap: (){
                             if(q[index]==indexSong){
                               setState((){
-                                points+=10;
-                                if(points>record) _setPrefs();
-                                currentIndex++;
                                 isCorrectAnswer = 1;
-                                indexSong = questionsOrder[currentIndex];
-                                q = generateAnswers(indexSong);
+                                isSelectedAnswer = index;
+                                Timer(Duration(seconds: 1), () => nextQuestion(true));
                               });
-                            } else setState((){
-                              isCorrectAnswer = -1;
-                            });
+                            } else {
+                              setState((){
+                                isSelectedAnswer = index;
+                                isCorrectAnswer = - 1;
+                                Timer(Duration(seconds: 1), () => nextQuestion(false));
+
+                              });
+                            }
                           },
                           child: Padding(
                             padding: EdgeInsets.all(20),
                             child: Container(
                               decoration: BoxDecoration(
-                                color: isCorrectAnswer==0 ? Colors.blueAccent : isCorrectAnswer==-1 ? Colors.redAccent : Colors.lightGreen,
+                                color: isCorrectAnswer == 1 && isSelectedAnswer==index ? Colors.lightGreen : isCorrectAnswer == -1 && isSelectedAnswer==index ? Colors.redAccent : Colors.blueAccent,
                                 borderRadius: BorderRadius.circular(10)
                               ),
                               child: Column(
